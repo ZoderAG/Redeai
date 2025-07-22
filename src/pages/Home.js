@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import "../styles/Home.css";
-import logo from '../images/logo.png';
-
+import logo from "../images/logo.png";
+ 
 export default function Home() {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
-
+ 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") {
@@ -16,34 +16,38 @@ export default function Home() {
     } else {
       document.body.classList.remove("dark-mode");
     }
-
+ 
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigate("/profile");
-      }
+      if (user) navigate("/profile");
     });
-
+ 
     return () => unsubscribe();
   }, [navigate]);
-
+ 
   const toggleTheme = () => {
-    const isDark = !darkMode;
-    setDarkMode(isDark);
-    document.body.classList.toggle("dark-mode", isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    document.body.classList.toggle("dark-mode", newMode);
+    localStorage.setItem("theme", newMode ? "dark" : "light");
   };
-
+ 
   return (
     <div className="home-container">
       <button className="theme-toggle" onClick={toggleTheme}>
         {darkMode ? "Modo Claro ☀️" : "Modo Escuro 🌙"}
       </button>
-      <h1>Bem-vindo ao Site!</h1>
-        <img src={logo} alt="Logo RedEaI" className="logo" />
-      <div className="buttons-container">
-        <button onClick={() => navigate("/login")}>Login</button>
-        <button onClick={() => navigate("/register")}>Registar</button>
+ 
+      <div className="home-card">
+        <img src={logo} alt="Logo Redeai" className="inner-logo" />
+        <h1 className="main-title">Bem-vindo à Redeai!</h1>
+        <p className="slogan">Conecte. Compartilhe. Jogue.</p>
+ 
+        <div className="buttons-container vertical">
+          <button onClick={() => navigate("/login")}>Login</button>
+          <button onClick={() => navigate("/register")}>Registar</button>
+        </div>
       </div>
     </div>
   );
 }
+ 

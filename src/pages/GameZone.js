@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; // adicionei useEffect
 import "../styles/GameZone.css";
 import LogoutDock from "../components/LogoutDock";
 import BackToProfileDock from "../components/BackToProfileDock";
+ 
+ 
+ 
 import flappyBirdImg from "../images/flappy-bird.png";
 import StreetF2Img from "../images/StreetF2Img.png";
 import pacManImg from "../images/pac-man.png";
@@ -14,8 +17,7 @@ import MKImg from "../images/mk.png";
 import DK2Img from "../images/dk2.png";
 import Fifa2KImg from "../images/fifa2k.png";
 import InitialDImg from "../images/initiald.png";
-
-
+ 
 const games = [
   {
     name: "Flappy Bird",
@@ -52,7 +54,7 @@ const games = [
     width: 640,
     height: 480,
   },
-    {
+  {
     name: "Sonic The Hedgehog",
     thumbnail: SonicImg,
     url: "https://www.retrogames.cc/embed/30899-sonic-the-hedgehog-usa-europe.html",
@@ -102,52 +104,63 @@ const games = [
     height: 480,
   },
 ];
-
+ 
 export default function GameZone() {
   const [selectedGame, setSelectedGame] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-
-  
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+ 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.body.classList.add("dark-mode");
-    } else {
-      setDarkMode(false);
-      document.body.classList.remove("dark-mode");
-    }
-  }, []);
-
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+ 
   const toggleTheme = () => {
-    const isDark = !darkMode;
-    setDarkMode(isDark);
-    document.body.classList.toggle("dark-mode", isDark);
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
   };
-
+ 
   return (
     <div className="gamezone-container">
       <div className="side-dock">
         <BackToProfileDock />
         <LogoutDock />
       </div>
-
-      <h2>🎮 Bem-vindo à GameZone!</h2>
-
+ 
+      <div className="header-container">
+        <h1 className="gamezone-title">🎮 Bem-vindo à GameZone!</h1>
+ 
+      </div>
+<button
+          onClick={toggleTheme}
+          aria-label="Alternar tema claro/escuro"
+          className="theme-toggle-btn"
+        >
+          {theme === "light" ? "Modo Escuro 🌙" : "Modo Claro ☀️"}
+        </button>
       {!selectedGame ? (
-        <div className="game-list">
-          {games.map((game) => (
-            <div key={game.name} className="game-card">
-              <img src={game.thumbnail} alt={game.name} />
-              <h3>{game.name}</h3>
-              <button onClick={() => setSelectedGame(game)}>Jogar</button>
-            </div>
-          ))}
-        </div>
+        <>
+          <h2 className="games-list-title">Lista de Jogos</h2>
+          <div className="game-list">
+            {games.map((game) => (
+              <div
+                key={game.name}
+                className="game-card"
+                onClick={() => setSelectedGame(game)}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") setSelectedGame(game);
+                }}
+              >
+                <img src={game.thumbnail} alt={game.name} />
+                <h3 className="game-name">{game.name}</h3>
+                <button className="play-button">Jogar</button>
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
         <div className="game-player">
-          <h3>{selectedGame.name}</h3>
+          <h2 className="selected-game-title">{selectedGame.name}</h2>
           <iframe
             src={selectedGame.url}
             width={selectedGame.width}
@@ -155,9 +168,9 @@ export default function GameZone() {
             title={selectedGame.name}
             frameBorder="0"
             allowFullScreen
-          ></iframe>
+          />
           <br />
-          <button onClick={() => setSelectedGame(null)}>⬅ Voltar</button>
+          <button onClick={() => setSelectedGame(null)}>↩ Voltar</button>
         </div>
       )}
     </div>

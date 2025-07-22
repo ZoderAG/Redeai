@@ -1,18 +1,34 @@
+body {
+  background-image: url('../images/logo.png');
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-attachment: fixed;
+  background-color: #f5f7ff; /* cor base clara */
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+ 
+/* Estilização geral do container da aplicação */
 .App {
   text-align: center;
 }
-
+ 
+/* Logo padrão do React (não utilizada, mas mantida para compatibilidade) */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
+ 
+/* Animação para a logo se estiver sendo usada */
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+ 
+/* Cabeçalho do app, pode ser removido se não estiver em uso */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -23,11 +39,13 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+ 
+/* Link da aplicação */
 .App-link {
   color: #61dafb;
 }
-
+ 
+/* Animação da logo girando (mantido caso esteja em uso) */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
